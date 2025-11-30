@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Café ingresado a tolva</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+  * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: #fafafa;
+    padding: 15px;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    color: #212121;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* 🔥 TÍTULO EDITABLE */
+  #tituloEditable {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 12px;
+    color: #f78c2a;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* 🔥 LABEL EDITABLE */
+  #labelEditable {
+    font-size: 1rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    width: 100%;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  input[type="number"], input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 14px;
+    font-size: 1rem;
+    border: 2px solid #e2daf1;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  /* 🔥 CONTENEDOR SIN BORDES Y RESPONSIVE */
+  .table-container {
+    width: 100%;
+    background: white;
+    box-shadow: 0 4px 12px rgba(125, 106, 255, 0.15);
+    overflow-x: auto;
+    margin-bottom: 15px;
+    border: none;
+  }
+
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    min-width: 300px;
+  }
+
+  thead { 
+    background-color: #f78c2a; 
+    color: white; 
+  }
+  
+  thead th { 
+    padding: 12px 8px; 
+    font-weight: 700; 
+    font-size: 1rem; 
+    border: none;
+  }
+
+  tbody tr { 
+    border-bottom: 1px solid #ffffff; 
+  }
+  
+  tbody tr:nth-child(even) { 
+    background-color: #f9f9f9; 
+  }
+  
+  tbody td { 
+    padding: 10px 8px; 
+    text-align: center; 
+    border: none;
+  }
+
+  tbody input {
+    font-size: 1rem;
+    width: 95%;
+    border: none;
+    background: transparent;
+    text-align: center;
+    border-radius: 0;
+  }
+
+  tfoot tr { 
+    background-color: #f78c2a; 
+    font-weight: 700; 
+    font-size: 1.1rem; 
+    color: white; 
+  }
+  
+  tfoot td { 
+    padding: 12px 8px; 
+    text-align: center; 
+    border: none;
+  }
+
+  .btn-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  button {
+    flex: 1;
+    min-width: 100px;
+    background: #f78c2a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    padding: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background: #e67e22;
+  }
+
+  #addRowBtn { background-color: #4caf50; }
+  #addRowBtn:hover { background-color: #45a049; }
+  #printBtn { background-color: #0288d1; }
+  #printBtn:hover { background-color: #0277bd; }
+
+  /* 🔥 ESTILOS DE IMPRESIÓN MEJORADOS */
+  @media print {
+    @page {
+      margin: 0.5cm !important;
+      size: auto;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background: white;
+      font-size: 12pt;
+      color: black;
+    }
+    
+    /* Eliminar encabezados y pies de página del navegador */
+    @page :first { margin-top: 0; }
+    @page :left { margin-top: 0; }
+    @page :right { margin-top: 0; }
+    
+    /* Ocultar elementos no deseados */
+    .btn-row { display: none !important; }
+    button { display: none !important; }
+    
+    /* Estilos para la tabla en impresión */
+    .table-container {
+      box-shadow: none;
+      border: 1px solid #ddd;
+      width: 100%;
+    }
+    
+    table {
+      width: 100%;
+      border: 1px solid #333;
+    }
+    
+    thead th {
+      background-color: #f78c2a !important;
+      color: white !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    
+    tfoot tr {
+      background-color: #f78c2a !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    
+    input {
+      border: none !important;
+      background: transparent !important;
+    }
+    
+    /* Asegurar que los colores se impriman */
+    * {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
+  /* 🔥 RESPONSIVE ADJUSTMENTS */
+  @media (max-width: 480px) {
+    body {
+      padding: 10px;
+    }
+    
+    #tituloEditable {
+      font-size: 1.3rem;
+    }
+    
+    #labelEditable {
+      font-size: 0.9rem;
+    }
+    
+    input[type="number"], input[type="text"] {
+      padding: 10px 12px;
+      font-size: 0.9rem;
+    }
+    
+    thead th, tbody td, tfoot td {
+      padding: 8px 6px;
+      font-size: 0.9rem;
+    }
+    
+    button {
+      font-size: 0.9rem;
+      padding: 10px;
+    }
+    
+    .btn-row {
+      gap: 8px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 Título editable -->
+<input type="text" id="tituloEditable" value="☕ Café ingresado a tolva" />
+
+<!-- 🔥 Texto editable -->
+<input type="text" id="labelEditable" value="Total qq - Recibidos" />
+
+<input type="number" id="totalQQ" step="0.01" value="1036.28" min="0" />
+
+<div class="table-container">
+  <table id="tablaTickets">
+    <thead>
+      <tr>
+        <th>Ticket</th>
+        <th>Peso (kg)</th>
+      </tr>
+    </thead>
+
+    <tbody></tbody>
+
+    <tfoot>
+      <tr>
+        <td>Total kg</td>
+        <td id="totalPeso">0</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div class="btn-row">
+  <button id="addRowBtn">➕ Agregar</button>
+  <button id="printBtn">🖨️ Imprimir</button>
+</div>
+
+<script>
+const tablaBody = document.querySelector('#tablaTickets tbody');
+const totalPesoCell = document.getElementById('totalPeso');
+const totalQQInput = document.getElementById('totalQQ');
+
+const datosIniciales = [
+  { ticket: "C16144", peso: 12964.12 },
+  { ticket: "C16145", peso: 9777.30 },
+  { ticket: "C16143", peso: 5489.00 },
+  { ticket: "C16142", peso: 2664.44 },
+  { ticket: "C15931", peso: 933.44 },
+  { ticket: "C16148", peso: 1476.52 },
+  { ticket: "155026A00534", peso: 14363.88 }
+];
+
+function agregarFila(ticket='', peso='') {
+  const fila = document.createElement('tr');
+  fila.innerHTML = `
+    <td><input type="text" class="ticket" value="${ticket}"></td>
+    <td><input type="number" class="peso" step="0.01" value="${peso}"></td>
+  `;
+
+  tablaBody.appendChild(fila);
+
+  fila.querySelector('.peso').addEventListener('input', calcularTotales);
+
+  fila.addEventListener('dblclick', () => {
+    if (confirm("¿Eliminar fila?")) {
+      fila.remove();
+      calcularTotales();
+    }
+  });
+
+  calcularTotales();
+}
+
+function calcularTotales() {
+  let totalKg = 0;
+  document.querySelectorAll('.peso').forEach(i => totalKg += parseFloat(i.value) || 0);
+  
+  // Actualizar valores en la interfaz
+  totalPesoCell.textContent = totalKg.toFixed(2);
+  
+  // Calcular quintales (1 qq = 46 kg) y actualizar el campo
+  const totalQq = totalKg / 46;
+  totalQQInput.value = totalQq.toFixed(2);
+}
+
+// Inicializar la tabla con datos
+datosIniciales.forEach(r => agregarFila(r.ticket, r.peso));
+
+// Event listeners
+document.getElementById('addRowBtn').addEventListener('click', () => agregarFila());
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+// Calcular totales iniciales
+calcularTotales();
+</script>
+
+</body>
+</html>
